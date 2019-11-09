@@ -28,11 +28,8 @@ rm apps.json
 webanalyze -update
 for line in `cat /root/var123.txt`
 do
-echo "webanalyze -crawl 12 -host $line -output csv >> /root/whatsweb.txt ; sort -u /root/whatsweb.txt -o /root/whatsweb.txt ; wc -l /root/whatsweb.txt" >> analyze.txt
-done
-for line in `cat analyze.txt`
-do
-timeout 16 bash $line
+echo "webanalyze -crawl 12 -host $line -output csv >> /root/whatsweb.txt ; sort -u /root/whatsweb.txt -o /root/whatsweb.txt ; wc -l /root/whatsweb.txt" > analyze.sh
+timeout 16 bash analyze.sh
 done
 rm analyze.sh
 rm /root/var123.txt
@@ -179,23 +176,23 @@ then
 for key in `cat keyword.txt`
 do
 grep "${key}" /root/whatsweb.txt | grep "num_key" | awk -F, '{print $1}' >> /root/cve/${name}______match.txt ; sort -u /root/cve/${name}______match.txt -o /root/cve/${name}______match.txt
-grep "${key}" /root/whatsweb.txt | awk -F, '{print $1}' >> /root/cve/${name}______all.txt ; sort -u /root/cve/${name}______all.txt -o /root/cve/${name}______all.txt
+grep -oP "http.*" /root/cve/${name}.txt >> /root/cve/${name}______allurl.txt ; sort -u /root/cve/${name}______all.txt -o /root/cve/${name}______allurl.txt
 done
 rm keyword.txt
 else
 for key in `cat keyword.txt`
 do
 grep "${key}" /root/whatsweb.txt >> /root/cve/${name}______match.txt ; sort -u /root/cve/${name}______match.txt -o /root/cve/${name}______match.txt
-grep "${key}" /root/whatsweb.txt | awk -F, '{print $1}'>> /root/cve/${name}______all.txt ; sort -u /root/cve/${name}______all.txt -o /root/cve/${name}______all.txt
+grep -oP "http.*" /root/cve/${name}.txt >> /root/cve/${name}______allurl.txt ; sort -u /root/cve/${name}______all.txt -o /root/cve/${name}______allurl.txt
 done
 fi
 
 resultline=`cat /root/cve/${name}______match.txt | wc -l`
 if [ $resultline -eq 0 ]
 then
-result=`echo "......................." ; echo "grep /root/cve/${name}.txt       nano /root/cve/${name}______all.txt"`
+result=`echo "......................." ; echo "nano /root/cve/${name}.txt       nano /root/cve/${name}______allurl.txt"`
 else
-result=`echo "!!!!!!!!!!!!!!!!!!!!!!!" ; echo "grep /root/cve/${name}.txt       nano /root/cve/${name}______all.txt          nano /root/cve/${name}______match.txt"`
+result=`echo "!!!!!!!!!!!!!!!!!!!!!!!" ; echo "nano /root/cve/${name}.txt       nano /root/cve/${name}______allurl.txt          nano /root/cve/${name}______match.txt"`
 fi
 echo "s=hooks.sl ; c=ack.com/ser ; k=vices/TM26L9 ; sck=\$s\$c\$k ; curl -X POST -H \"Content-type:application/json\" --data '{\"text\":\"${word}\n${grep2}\n${result}\nhttps://www.exploit-db.com/exploits/${i}\n\n\"}' https://\${sck}ZEE/BM78UTLGH/GBt3k5B25BqAyc5EDzYPDdhg" > slack.sh
 bash slack.sh ; rm slack.sh
