@@ -93,7 +93,8 @@ rm to.txt
 echo '' >> target.txt
 
 target=`cat target.txt`
-echo "s=hooks.sl ; c=ack.com/ser ; k=vices/TM26L9 ; sck=\$s\$c\$k ; curl -X POST -H \"Content-type:application/json\" --data '{\"text\":\"${word}\n${grep2}\n${target}\nhttps://www.exploit-db.com/exploits/${i}\n\n\"}' https://\${sck}ZEE/BM78UTLGH/GBt3k5B25BqAyc5EDzYPDdhg" > slack.sh
+url=`grep -oP "http.*?(?=\")" /root/script/webhook.sh`
+echo "curl -X POST -H \"Content-type:application/json\" --data '{\"text\":\"${word}\n${grep2}\n${target}\nhttps://www.exploit-db.com/exploits/${i}\n\n\"}' $url" > slack.sh
 bash slack.sh ; rm slack.sh
 rm target.txt
 sleep 1
@@ -194,7 +195,8 @@ result=`echo "......................." ; echo "nano /root/cve/${name}.txt       
 else
 result=`echo "!!!!!!!!!!!!!!!!!!!!!!!" ; echo "nano /root/cve/${name}.txt       nano /root/cve/${name}______allurl.txt          nano /root/cve/${name}______match.txt"`
 fi
-echo "s=hooks.sl ; c=ack.com/ser ; k=vices/TM26L9 ; sck=\$s\$c\$k ; curl -X POST -H \"Content-type:application/json\" --data '{\"text\":\"${word}\n${grep2}\n${result}\nhttps://www.exploit-db.com/exploits/${i}\n\n\"}' https://\${sck}ZEE/BM78UTLGH/GBt3k5B25BqAyc5EDzYPDdhg" > slack.sh
+url=`grep -oP "http.*?(?=\")" /root/script/webhook.sh`
+echo "curl -X POST -H \"Content-type:application/json\" --data '{\"text\":\"${word}\n${grep2}\n${result}\nhttps://www.exploit-db.com/exploits/${i}\n\n\"}' $url" > slack.sh
 bash slack.sh ; rm slack.sh
 fi
 fi
