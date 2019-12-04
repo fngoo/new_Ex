@@ -411,3 +411,4 @@ sleep 6
 else
 sleep 6
 fi
+exit
