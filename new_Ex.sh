@@ -1,12 +1,12 @@
 #确认存在
-a=`curl --speed-time 5 --speed-limit 1  https://www.exploit-db.com/download/${i} | grep "Exploit\ Database\ 404"`
+a=`curl -L --speed-time 5 --speed-limit 1  https://www.exploit-db.com/download/${i} | grep "Exploit\ Database\ 404"`
 
 if [ "$a" = "" ]
 then
 
 
 #确认类型
-curl --speed-time 5 --speed-limit 1  https://www.exploit-db.com/exploits/${i} > curl.txt
+curl -L --speed-time 5 --speed-limit 1  https://www.exploit-db.com/exploits/${i} > curl.txt
 web=`cat curl.txt | grep -oP "type=webapps"`
 
 if [ "$web" = "type=webapps" ]
@@ -165,5 +165,6 @@ echo $i
 sleep 6
 else
 sleep 6
+rm curl.txt
 fi
 exit
