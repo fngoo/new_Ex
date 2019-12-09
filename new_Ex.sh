@@ -1,9 +1,9 @@
 if [ -s /root/whatsweb.txt ]
 then
 #确认存在
-a=`curl -L --speed-time 5 --speed-limit 1  https://www.exploit-db.com/download/${i} | grep "Exploit\ Database\ 404"`
+a=`curl -i --speed-time 5 --speed-limit 1  https://www.exploit-db.com/download/${i} | grep -oP "HTTP.*?200"
 
-if [ "$a" = "" ]
+if [ "$a" != "" ]
 then
 
 
